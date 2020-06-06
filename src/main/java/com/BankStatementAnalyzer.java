@@ -6,18 +6,16 @@ import java.nio.file.Paths;
 import java.time.Month;
 import java.util.List;
 
-public class FinancialAnalyzerSimple {
+public class BankStatementAnalyzer {
     private static final String RESOURCES = "src/main/resources/";
-    private static final BankStatementCSVParser bankStatementParser = new BankStatementCSVParser();
 
+    public  void analyze(final String filename, final BankStatementParser bankStatementParser) throws Exception {
 
-    public static void main(final String... args) throws Exception {
-
-        final String filename = "resources.csv";
         final Path path = Paths.get(RESOURCES + filename);
         final List<String> lines = Files.readAllLines(path);
 
-        final List<BankTransaction> bankTransactions = bankStatementParser.parseLinesFromCSV(lines);
+        final List<BankTransaction> bankTransactions = bankStatementParser.parseLinesFrom(lines);
+
         final BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(bankTransactions);
 
         collectSummary(bankStatementProcessor);
@@ -30,10 +28,10 @@ public class FinancialAnalyzerSimple {
         System.out.println("The total for transactions in January is "
                 + bankStatementProcessor.calculateTotalInMonth(Month.JANUARY));
 
-        System.out.println("The total for transactions in January is "
-                + bankStatementProcessor.calculateTotalInMonth(Month.JANUARY));
+        System.out.println("The total for transactions in February is "
+                + bankStatementProcessor.calculateTotalInMonth(Month.FEBRUARY));
 
-        System.out.println("The toatl salary received is "
+        System.out.println("The total salary received is "
                 + bankStatementProcessor.calculateTotalForCategory("Salary"));
     }
 }
